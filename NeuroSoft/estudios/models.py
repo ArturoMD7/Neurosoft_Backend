@@ -9,7 +9,7 @@ class Estudio(models.Model):
         ('Alta', 'Alta'),
     ]
     
-    paciente_id = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    paciente_id = models.ForeignKey(Paciente, on_delete=models.CASCADE, db_column='paciente_id', verbose_name='Paciente')
     fecha_estudio = models.DateField()
     sede = models.CharField(max_length=100)
     prioridad = models.CharField(max_length=5, choices=PRIORIDAD_CHOICES, default='Media')

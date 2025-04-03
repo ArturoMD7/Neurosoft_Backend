@@ -1,6 +1,8 @@
 from django.db import models
 from pacientes.models import Paciente
 from django.utils.translation import gettext_lazy as _
+import json
+
 
 class Resultado(models.Model):
     class EstadoEstudio(models.TextChoices):
@@ -12,16 +14,17 @@ class Resultado(models.Model):
         POCO_PROBABLE = 'Poco probable', _('Poco probable')
         PROBABLE = 'Probable', _('Probable')
         MUY_PROBABLE = 'Muy probable', _('Muy probable')
-    
+
+    probabilidades = models.TextField(null=True, blank=True, verbose_name=_('Probabilidades de predicción (JSON)'))
+
+
     paciente = models.ForeignKey(
         Paciente,
         on_delete=models.CASCADE,
         verbose_name=_('Paciente'),
         related_name='resultados'
     )
-    fecha_estudio = models.DateField(
-        verbose_name=_('Fecha del estudio')
-    )
+    fecha_estudio = models.DateField(verbose_name=_('Fecha del estudio'))
     fecha_resultado = models.DateField(
         verbose_name=_('Fecha del resultado'),
         auto_now_add=True
@@ -42,7 +45,8 @@ class Resultado(models.Model):
         decimal_places=2,
         verbose_name=_('Precisión (%)')
     )
-    imagen_estudio = models.ImageField(
+    # En tu modelo Resultado, modifica el campo imagen_estudio:
+    imagen_estudio = models.FileField(
         upload_to='resultados/imagenes/',
         null=True,
         blank=True,
@@ -78,7 +82,3 @@ class Resultado(models.Model):
     @property
     def precision_porcentaje(self):
         return f"{self.precision}%"
-
-    def save(self, *args, **kwargs):
-        # Lógica adicional antes de guardar si es necesaria
-        super().save(*args, **kwargs)
