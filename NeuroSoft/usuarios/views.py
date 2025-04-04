@@ -12,19 +12,25 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
     
     def get_permissions(self):
-        """
-        Asigna permisos según la acción:
-        - Crear usuario y login: Acceso público
-        - Ver perfil propio: Usuario autenticado
-        - Operaciones CRUD: Solo admin
-        """
         if self.action in ['create', 'login', 'logout']:
             return [AllowAny()]
+        elif self.action == 'list':  # Cambiamos para permitir usuarios autenticados
+            return [IsAuthenticated()]
+        elif self.action in ['retrieve', 'update', 'partial_update', 'destroy']:
+            return [IsAdminUser()]
         elif self.action == 'me':
             return [IsAuthenticated()]
-        elif self.action in ['list', 'retrieve', 'update', 'partial_update', 'destroy']:
-            return [IsAdminUser()]
         return super().get_permissions()
+    
+    # Método GET personalizado para obtener todos los usuarios
+    @action(detail=False, methods=['get'], permission_classes=[IsAdminUser])
+    def get_usuarios(self, request):
+        """
+        Endpoint para obtener todos los usuarios (solo administradores)
+        """
+        usuarios = Usuario.objects.all()
+        serializer = self.get_serializer(usuarios, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['post'])
     def login(self, request):
