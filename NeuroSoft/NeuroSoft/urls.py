@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/estudios/', include('estudios.urls')),
     path('api/resultados/', include('resultados.urls')),
     path('api/usuarios/', include('usuarios.urls')),
+     path('api/informes/', include('informes.urls')),
 ]
 
 # Servir archivos estáticos y media en desarrollo

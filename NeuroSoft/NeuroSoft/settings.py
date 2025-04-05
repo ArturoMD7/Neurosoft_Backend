@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'checklists',
     'estudios',
     'resultados',
+    'informes',
     'neurosoft_model',  # Agregada tu app de IA
     'django_filters',
 
