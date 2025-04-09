@@ -12,13 +12,14 @@ from django.core.files.base import ContentFile
 import base64
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import AllowAny
 
 logger = logging.getLogger(__name__)
 
 class ResultadoViewSet(viewsets.ModelViewSet):
     queryset = Resultado.objects.all().order_by('-fecha_estudio')  # Ordenar por fecha descendente
     serializer_class = ResultadoSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]  # Permitir acceso sin necesidad de autenticación
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['paciente_id', 'estado_estudio', 'prediccion_ia']
     search_fields = ['paciente_id__nombre', 'paciente_id__apellido_paterno', 'resumen_prediccion']
@@ -310,6 +311,7 @@ class ConsultaResultadoView(APIView):
                 {'success': False, 'error': 'Error interno del servidor'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
 
 import uuid
 class ProcesarImagenView(APIView):

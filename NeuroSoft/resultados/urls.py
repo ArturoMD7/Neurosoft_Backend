@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import ResultadoViewSet
 from .views import ConsultaResultadoView
+
 router = DefaultRouter()
 router.register(r'resultados', ResultadoViewSet)
 
