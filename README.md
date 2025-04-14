@@ -1,4 +1,4 @@
-## MIAU BACKEND DJANGO
+## NeuroSoft BACKEND DJANGO
 
 ### Bajar archivo
 `git clone <link>`
